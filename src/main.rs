@@ -14,6 +14,12 @@ use pattern::Pattern;
 
 type Res<E: Debug> = Result<(), E>;
 
+fn sleep_ms(ms: u64) {
+    use std::thread::sleep;
+    use std::time::Duration;
+    sleep(Duration::from_millis(ms));
+}
+
 fn cmd<T: ToString>(cmd: T) -> Res<String> {
     use std::process::Command;
     let cmd = cmd.to_string();

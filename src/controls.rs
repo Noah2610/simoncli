@@ -28,6 +28,7 @@ impl ToString for Key {
     }
 }
 
+#[derive(Clone)]
 pub struct Control {
     pub key:  Key,
     pub cell: Cell,
@@ -73,5 +74,35 @@ impl Controls {
             .iter()
             .find(|control| &control.key == key)
             .map(|control| control.cell)
+    }
+
+    pub fn iter(&self) -> ControlsIter {
+        ControlsIter::new(self.controls.clone())
+    }
+}
+
+use std::iter::Iterator;
+
+pub struct ControlsIter {
+    controls: Vec<Control>,
+    index:    usize,
+}
+
+impl ControlsIter {
+    pub fn new(controls: Vec<Control>) -> Self {
+        Self { controls, index: 0 }
+    }
+}
+
+impl Iterator for ControlsIter {
+    type Item = Control;
+
+    fn next(&mut self) -> Option<Self::Item> {
+        if let Some(control) = self.controls.get(self.index) {
+            self.index += 1;
+            Some(control.clone())
+        } else {
+            None
+        }
     }
 }

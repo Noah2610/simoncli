@@ -52,7 +52,6 @@ impl Board {
 
                 for cell in cells {
                     if cell == &pat_cell {
-                        // print(FILLED);
                         print(pat_index + 1);
                     } else {
                         print(EMPTY);
