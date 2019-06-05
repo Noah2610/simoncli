@@ -13,9 +13,14 @@ impl Pattern {
     }
 
     pub fn generate(&mut self, length: usize) {
-        for i in (0 .. length) {
+        self.clear();
+        for i in 0 .. length {
             self.instructions.push(Cell::random());
         }
+    }
+
+    pub fn clear(&mut self) {
+        self.instructions.clear();
     }
 
     pub fn iter(&self) -> PatternIter {

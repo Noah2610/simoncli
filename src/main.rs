@@ -1,5 +1,6 @@
 mod board;
 mod cell;
+mod controls;
 mod game;
 mod pattern;
 
@@ -25,6 +26,15 @@ fn cmd<T: ToString>(cmd: T) -> Res<String> {
 
 fn print<T: Display>(s: T) {
     print!("{}", s);
+}
+
+fn flush() -> Res<String> {
+    use std::io::{stdout, Write};
+    if stdout().flush().is_err() {
+        Err("Couldn't flush stdout".into())
+    } else {
+        Ok(())
+    }
 }
 
 fn main() {

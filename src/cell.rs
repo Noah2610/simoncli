@@ -1,5 +1,3 @@
-use std::fmt::{self, Display};
-
 use rand::{thread_rng, Rng};
 
 #[derive(Clone, Copy, PartialEq)]
