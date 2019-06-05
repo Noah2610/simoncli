@@ -1,8 +1,9 @@
 [package]
 name = "simoncli"
-version = "0.1.0"
+version = "1.0.0"
 authors = ["Noah Rosenzweig <rosenzweig.noah@gmail.com>"]
 edition = "2018"
+description = "A simple, little CLI simon game"
 
 [dependencies]
 rand = "0.6.5"
