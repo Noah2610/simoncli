@@ -63,11 +63,12 @@ impl Game {
         use std::io::{stdin, BufRead};
 
         let mut pattern_iter = self.pattern.iter();
-        let mut guesses = Vec::<Cell>::new();
         let mut total_guesses = 0;
         let mut msg_prefix = "";
 
         while total_guesses < self.pattern.len() {
+            let mut guesses = Vec::new();
+
             print(format!("{}> ", msg_prefix));
             flush()?;
             msg_prefix = "";
@@ -126,7 +127,6 @@ impl Game {
                     return Ok(());
                 }
             }
-            guesses.clear();
         }
 
         if pattern_iter.next().is_some() {
