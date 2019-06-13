@@ -60,37 +60,78 @@ impl Game {
     }
 
     fn read_input(&mut self) -> Res<String> {
-        use std::io::{stdin, BufRead, Read};
+        use std::io::{stdin, BufRead};
 
-        for cell in self.pattern.iter() {
-            let mut should_read_input = true;
-            let mut guess = None;
+        let mut pattern_iter = self.pattern.iter();
+        let mut guesses = Vec::<Cell>::new();
+        let mut total_guesses = 0;
+        let mut msg_prefix = "";
 
-            while guess.is_none() {
-                print("> ");
-                flush()?;
+        while total_guesses < self.pattern.len() {
+            print(format!("{}> ", msg_prefix));
+            flush()?;
+            msg_prefix = "";
 
-                let mut input = String::new();
-                stdin().lock().read_line(&mut input);
-                let input = input.trim();
+            let mut input = String::new();
+            if let Err(e) = stdin().lock().read_line(&mut input) {
+                return Err(e.to_string());
+            };
+            let input = input.trim();
 
-                guess = self.controls.iter().find_map(|control| {
-                    if control.key.is(&input) {
-                        Some(control.cell.clone())
-                    } else {
-                        None
-                    }
-                });
+            // Validate inputs
+            if input
+                .chars()
+                .all(|c| self.controls.iter().any(|control| control.key.is(&c)))
+            {
+                guesses.append(
+                    &mut input
+                        .chars()
+                        .map(|c| {
+                            self.controls
+                                .iter()
+                                .find_map(|control| {
+                                    if control.key.is(&c) {
+                                        Some(control.cell.clone())
+                                    } else {
+                                        None
+                                    }
+                                })
+                                .expect(&format!(
+                                    "Given input key '{}' should be valid, \
+                                     because validation happened above",
+                                    c
+                                ))
+                        })
+                        .collect(),
+                );
+            } else {
+                msg_prefix = "invalid ";
             }
 
-            if let Some(guess) = guess {
-                if guess == cell {
-                    self.score += 1;
+            if input.is_empty() {
+                msg_prefix = "type your guess(es) ";
+            }
+
+            for &guess in guesses.iter() {
+                if let Some(cell) = pattern_iter.next() {
+                    if guess == cell {
+                        total_guesses += 1;
+                        self.score += 1;
+                    } else {
+                        self.game_over()?;
+                        return Ok(());
+                    }
                 } else {
                     self.game_over()?;
                     return Ok(());
                 }
             }
+            guesses.clear();
+        }
+
+        if pattern_iter.next().is_some() {
+            self.game_over()?;
+            return Ok(());
         }
 
         Ok(())

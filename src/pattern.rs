@@ -29,6 +29,10 @@ impl Pattern {
         self.instructions.clear();
     }
 
+    pub fn len(&self) -> usize {
+        self.instructions.len()
+    }
+
     pub fn iter(&self) -> PatternIter {
         PatternIter::new(self.instructions.clone())
     }
