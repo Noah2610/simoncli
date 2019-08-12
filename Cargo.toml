@@ -4,6 +4,10 @@ version = "1.1.0"
 authors = ["Noah Rosenzweig <rosenzweig.noah@gmail.com>"]
 edition = "2018"
 description = "A simple, little CLI simon game"
+repository = "https://github.com/Noah2610/simoncli"
+keywords = ["simon", "game"]
+categories = ["games", "command-line-utilities"]
+license = "Unlicense"
 
 [dependencies]
 rand = "0.6.5"
