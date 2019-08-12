@@ -134,7 +134,7 @@ dependencies = [
 
 [[package]]
 name = "simoncli"
-version = "1.1.0"
+version = "1.1.1"
 dependencies = [
  "rand 0.6.5 (registry+https://github.com/rust-lang/crates.io-index)",
 ]
